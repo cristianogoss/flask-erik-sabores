@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, Arial;
+    background-color: #030303;
+}
+.card {
+    margin-top: 50px;
+}
+.card-header, .card-footer {
+    background-color: #080808;
+    color: rgb(255, 244, 244);
+}
+.card-body {
+    background-color: #fafafa;
+}

@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente do Restaurante Erik Sabores</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card text-center">
+            <div class="card-header">
+                <h3 class="card-title">Bem-vindo ao Assistente do Restaurante Erik Sabores</h3>
+            </div>
+            <div class="card-body">
+               <form id="questionForm" class="form-inline justify-content-center">
+                    <label for="questao" class="sr-only">Digite sua pergunta:</label>
+                    <input type="text" id="questao" name="questao" class="form-control mb-2 mr-sm-2" placeholder="Digite sua pergunta" required>
+                    <button type="submit" class="btn btn-primary mb-2">Perguntar</button>
+                </form>
+                <div id="resposta" class="mt-4"></div>
+            </div>
+            <div class="card-footer text-muted">
+                Foi um prazer lhe atender, não deixe de provar nossos sabores.
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('questionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const questao = document.getElementById('questao').value;
+
+            fetch('/perguntar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'questao': questao
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const respostaDiv = document.getElementById('resposta');
+                if (data.resposta) {
+                    respostaDiv.innerHTML = `<p>${data.resposta}</p>`;
+                } else if (data.erro) {
+                    respostaDiv.innerHTML = `<p>${data.erro}</p>`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
